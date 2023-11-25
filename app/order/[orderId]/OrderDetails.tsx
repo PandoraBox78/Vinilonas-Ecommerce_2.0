@@ -65,14 +65,14 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
             />
           ) : order.deliveryStatus === "dispatched" ? (
             <Status
-              text="despachado"
+              text="enviado"
               icon={MdDeliveryDining}
               bg="bg-purple-200"
               color="text-purple-700"
             />
           ) : order.deliveryStatus === "delivered" ? (
             <Status
-              text="Entregado"
+              text="entregado"
               icon={MdDone}
               bg="bg-green-200"
               color="text-green-700"
