@@ -54,7 +54,7 @@ const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
           </div>
         </Container>
       </div>
-      <div className="md:hidden flex justify-center items-center p-5">
+      <div className="md:hidden flex justify-center items-center p-2">
       <SearchBar />
       </div>
       <Categories />
