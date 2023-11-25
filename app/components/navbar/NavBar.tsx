@@ -1,13 +1,12 @@
+"use client";
 import { Redressed } from "next/font/google";
 import Link from "next/link";
-
 import Container from "../Container";
 import CartCount from "./CartCount";
 import UserMenu from "./UserMenu";
 import { SafeUser } from "@/types";
 import Categories from "./Categories";
 import SearchBar from "./SearchBar";
-import Image from "next/image";
 
 interface NavBarProps {
   currentUser: SafeUser | null;
@@ -54,6 +53,9 @@ const NavBar: React.FC<NavBarProps> = ({ currentUser }) => {
             </div>
           </div>
         </Container>
+      </div>
+      <div className="md:hidden flex justify-center items-center p-5">
+      <SearchBar />
       </div>
       <Categories />
     </div>
