@@ -9,7 +9,6 @@ import { MdAccessTimeFilled, MdDeliveryDining, MdDone } from "react-icons/md";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import moment from "moment";
-import "moment/locale/es-MX"; 
 
 interface OrderDetailsProps {
   order: Order;
