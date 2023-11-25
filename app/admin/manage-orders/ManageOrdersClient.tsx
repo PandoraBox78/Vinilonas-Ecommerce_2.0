@@ -37,14 +37,31 @@ const ManageOrdersClient: React.FC<ManageOrdersClientProps> = ({ orders }) => {
 
   if (orders) {
     rows = orders.map((order) => {
-      return {
-        id: order.id,
-        customer: order.user.name,
-        amount: formatPrice(order.amount / 100),
-        paymentStatus: order.status,
-        date: moment(order.createdDate).fromNow(),
-        deliveryStatus: order.deliveryStatus,
-      };
+      // Check if order and order.address are not null
+      if (order && order.address) {
+        const formattedAddress = `${order.address.line1}, ${order.address.line2}, ${order.address.city}, ${order.address.state}, ${order.address.postal_code}, ${order.address.country}`;
+  
+        return {
+          id: order.id,
+          customer: order.user.name,
+          amount: formatPrice(order.amount / 100),
+          paymentStatus: order.status,
+          address: formattedAddress,
+          date: moment(order.createdDate).fromNow(),
+          deliveryStatus: order.deliveryStatus,
+        };
+      } else {
+        // Handle the case where order or order.address is null
+        return {
+          id: order.id,
+          customer: order.user.name,
+          amount: formatPrice(order.amount / 100),
+          paymentStatus: order.status,
+          address: "N/A", // or any default value
+          date: moment(order.createdDate).fromNow(),
+          deliveryStatus: order.deliveryStatus,
+        };
+      }
     });
   }
 
@@ -89,6 +106,7 @@ const ManageOrdersClient: React.FC<ManageOrdersClientProps> = ({ orders }) => {
         );
       },
     },
+    { field: "address", headerName: "Domicilio", width: 220 },
     {
       field: "deliveryStatus",
       headerName: "Proceso de envío",
@@ -193,7 +211,7 @@ const ManageOrdersClient: React.FC<ManageOrdersClientProps> = ({ orders }) => {
   }, []);
 
   return (
-    <div className="max-w-[1150px] m-auto text-xl">
+    <div className="max-w-[1450px] m-auto text-xl">
       <div className="mb-4 mt-8">
         <Heading title="Control de pedidos" center />
       </div>
