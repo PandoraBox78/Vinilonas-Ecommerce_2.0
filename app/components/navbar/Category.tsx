@@ -20,7 +20,7 @@ const Category: React.FC<CategoryBoxProps> = ({
   const params = useSearchParams();
 
   const handleClick = useCallback(() => {
-    if (label === "All") {
+    if (label === "Todos los productos") {
       router.push("/");
     } else {
       let currentQuery = {};
