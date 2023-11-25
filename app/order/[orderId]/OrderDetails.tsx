@@ -9,6 +9,7 @@ import { MdAccessTimeFilled, MdDeliveryDining, MdDone } from "react-icons/md";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import moment from "moment";
+import "moment/locale/es-MX"; 
 
 interface OrderDetailsProps {
   order: Order;
@@ -16,6 +17,7 @@ interface OrderDetailsProps {
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   const router = useRouter();
+  moment.locale("es-MX");
 
   useEffect(() => {
     router.refresh();
@@ -54,6 +56,18 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
         </div>
       </div>
       <div className="flex gap-2 items-center">
+        <div>Dirección de envío:</div>
+        <div>
+          {order.address ? (
+            <div>
+              <div>{order.address.line1}, {order.address.line2}, {order.address.city}, {order.address.state}, {order.address.country}, CP:{order.address.postal_code}</div>
+            </div>
+          ) : (
+            <div>No disponible</div>
+          )}
+        </div>
+      </div>
+      <div className="flex gap-2 items-center">
         <div>Estado de envío:</div>
         <div>
           {order.deliveryStatus === "pending" ? (
@@ -82,7 +96,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
           )}
         </div>
       </div>
-      <div>Date: {moment(order.createdDate).fromNow()}</div>
+      <div>Fecha: {moment(order.createdDate).fromNow()}</div>
       <div>
         <h2 className="font-semibold mt-4 mb-2">Productos ordenados</h2>
         <div
