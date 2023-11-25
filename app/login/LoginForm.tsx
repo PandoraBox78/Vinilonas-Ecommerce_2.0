@@ -98,7 +98,7 @@ const LoginForm: React.FC<LoginUserProps> = ({ currentUser }) => {
         onClick={handleSubmit(onSubmit)}
       />
       <p className="text-sm">
-        ¿No tienes una cuenta?, inicia sesión{" "}
+        ¿No tienes una cuenta?,{" "}
         <Link className="underline" href="/register">
           Inicia sesión
         </Link>

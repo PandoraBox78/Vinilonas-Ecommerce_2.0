@@ -19,7 +19,7 @@ const CartClient: React.FC<CurrentUserProps> = ({ currentUser }) => {
   if (!cartProducts || cartProducts.length === 0) {
     return (
       <div className="flex flex-col items-center">
-        <div className="text-2xl">Your carrito esta vacio</div>
+        <div className="text-2xl">Tu carrito esta vacio</div>
         <div>
           <Link
             href={"/"}
