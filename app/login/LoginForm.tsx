@@ -48,13 +48,12 @@ const LoginForm: React.FC<LoginUserProps> = ({ currentUser }) => {
       setIsLoading(false);
 
       if (callback?.ok) {
-        router.push("/cart");
-        router.refresh();
+        router.replace("/cart");
         toast.success("Sesión iniciada correctamente");
       }
 
       if (callback?.error) {
-        toast.error(callback.error);
+        toast.error("Correo o contraseña invalidos");
       }
     });
   };
@@ -77,7 +76,7 @@ const LoginForm: React.FC<LoginUserProps> = ({ currentUser }) => {
       <hr className="bg-slate-300 w-full h-px" />
       <Input
         id="email"
-        label="Coreeo electrónico"
+        label="Correo electrónico"
         disabled={isLoading}
         register={register}
         errors={errors}
@@ -100,7 +99,7 @@ const LoginForm: React.FC<LoginUserProps> = ({ currentUser }) => {
       <p className="text-sm">
         ¿No tienes una cuenta?,{" "}
         <Link className="underline" href="/register">
-          Inicia sesión
+          Regístrate
         </Link>
       </p>
     </>

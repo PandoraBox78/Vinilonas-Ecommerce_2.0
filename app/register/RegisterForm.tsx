@@ -12,10 +12,18 @@ import Button from "../components/Button";
 import Heading from "../components/Heading";
 import { SafeUser } from "../../types";
 import { signIn } from "next-auth/react";
+import { yupResolver } from '@hookform/resolvers/yup'; // Importa yupResolver
+import * as yup from 'yup'; // Importa yup
 
 interface RegisterUserProps {
   currentUser: SafeUser | null;
 }
+
+const schema = yup.object().shape({
+  name: yup.string().required('Nombre es obligatorio'),
+  email: yup.string().email('Formato de correo electrónico inválido').required('Correo electrónico es obligatorio'),
+  password: yup.string().min(6, 'La contraseña debe tener al menos 6 caracteres').required('Contraseña es obligatoria'),
+});
 
 const RegisterForm: React.FC<RegisterUserProps> = ({ currentUser }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,15 +34,17 @@ const RegisterForm: React.FC<RegisterUserProps> = ({ currentUser }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    resolver: yupResolver(schema) as any, // Explicitly cast to 'any' to resolve the type issue
+  defaultValues: {
+    email: "",
+    password: "",
+    name: "", // Add the missing 'name' field to defaultValues
+  },
   });
 
   useEffect(() => {
     if (currentUser) {
-      router.push("/cart");
+      router.replace("/cart");
       router.refresh();
     }
   }, []);
@@ -55,8 +65,7 @@ const RegisterForm: React.FC<RegisterUserProps> = ({ currentUser }) => {
           setIsLoading(false);
 
           if (callback?.ok) {
-            router.push("/cart");
-            router.refresh();
+            router.replace("/cart");
             toast.success("Sesión iniciada");
           }
 
@@ -92,7 +101,9 @@ const RegisterForm: React.FC<RegisterUserProps> = ({ currentUser }) => {
         register={register}
         errors={errors}
         required
+
       ></Input>
+      {errors.name && <p className="text-red-500">{errors.name.message as String}</p>}
       <Input
         id="email"
         label="Correo Electrónico"
@@ -100,7 +111,9 @@ const RegisterForm: React.FC<RegisterUserProps> = ({ currentUser }) => {
         register={register}
         errors={errors}
         required
+        type="email"
       ></Input>
+      {errors.email && <p className="text-red-500">{errors.email.message as string}</p>}
       <Input
         id="password"
         label="Contraseña"
@@ -110,6 +123,7 @@ const RegisterForm: React.FC<RegisterUserProps> = ({ currentUser }) => {
         required
         type="password"
       ></Input>
+      {errors.password && <p className="text-red-500">{errors.password.message as string}</p>}
       <Button
         label={isLoading ? "Cargando..." : "Regístrate"}
         onClick={handleSubmit(onSubmit)}
