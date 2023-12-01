@@ -15,9 +15,9 @@ const Categories = () => {
   if (!isMainPage) return null;
 
   return (
-    <div className="bg-pink-600">
+    <div className="bg-pink-600 pt-2 pb-2">
       <Container>
-        <div className="pt-2 pb-2 flex flex-row items-center justify-between overflow-x-auto">
+        <div className=" flex flex-row items-center justify-between overflow-x-auto">
           {categories.map((item) => (
             <Category
               key={item.label}
