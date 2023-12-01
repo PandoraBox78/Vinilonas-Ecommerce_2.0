@@ -12,17 +12,29 @@ import Button from "../components/Button";
 import Heading from "../components/Heading";
 import { SafeUser } from "../../types";
 import { signIn } from "next-auth/react";
-import { yupResolver } from '@hookform/resolvers/yup'; // Importa yupResolver
-import * as yup from 'yup'; // Importa yup
+import { yupResolver } from "@hookform/resolvers/yup"; // Importa yupResolver
+import * as yup from "yup"; // Importa yup
 
 interface RegisterUserProps {
   currentUser: SafeUser | null;
 }
 
 const schema = yup.object().shape({
-  name: yup.string().required('Nombre es obligatorio'),
-  email: yup.string().email('Formato de correo electrónico inválido').required('Correo electrónico es obligatorio'),
-  password: yup.string().min(6, 'La contraseña debe tener al menos 6 caracteres').required('Contraseña es obligatoria'),
+  name: yup.string().required("Nombre es obligatorio"),
+  email: yup
+    .string()
+    .email("Formato de correo electrónico inválido")
+    .required("Correo electrónico es obligatorio"),
+  password: yup
+    .string()
+    .min(8, "La contraseña debe tener al menos 8 caracteres")
+    .required("Contraseña es obligatoria"),
+  confirmPassword: yup
+    .mixed()
+    .test("match", "Las contraseñas deben coincidir", function (value) {
+      return value === this.parent.password || value === null;
+    })
+    .required("Confirmar contraseña es obligatorio"),
 });
 
 const RegisterForm: React.FC<RegisterUserProps> = ({ currentUser }) => {
@@ -35,11 +47,12 @@ const RegisterForm: React.FC<RegisterUserProps> = ({ currentUser }) => {
     formState: { errors },
   } = useForm<FieldValues>({
     resolver: yupResolver(schema) as any, // Explicitly cast to 'any' to resolve the type issue
-  defaultValues: {
-    email: "",
-    password: "",
-    name: "", // Add the missing 'name' field to defaultValues
-  },
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      name: "", // Add the missing 'name' field to defaultValues
+    },
   });
 
   useEffect(() => {
@@ -101,9 +114,10 @@ const RegisterForm: React.FC<RegisterUserProps> = ({ currentUser }) => {
         register={register}
         errors={errors}
         required
-
       ></Input>
-      {errors.name && <p className="text-red-500">{errors.name.message as String}</p>}
+      {errors.name && (
+        <p className="text-red-500">{errors.name.message as String}</p>
+      )}
       <Input
         id="email"
         label="Correo Electrónico"
@@ -113,7 +127,9 @@ const RegisterForm: React.FC<RegisterUserProps> = ({ currentUser }) => {
         required
         type="email"
       ></Input>
-      {errors.email && <p className="text-red-500">{errors.email.message as string}</p>}
+      {errors.email && (
+        <p className="text-red-500">{errors.email.message as string}</p>
+      )}
       <Input
         id="password"
         label="Contraseña"
@@ -123,7 +139,23 @@ const RegisterForm: React.FC<RegisterUserProps> = ({ currentUser }) => {
         required
         type="password"
       ></Input>
-      {errors.password && <p className="text-red-500">{errors.password.message as string}</p>}
+      {errors.password && (
+        <p className="text-red-500">{errors.password.message as string}</p>
+      )}
+      <Input
+        id="confirmPassword"
+        label="Confirmar Contraseña"
+        disabled={isLoading}
+        register={register}
+        errors={errors}
+        required
+        type="password"
+      />
+      {errors.confirmPassword && (
+        <p className="text-red-500">
+          {errors.confirmPassword.message as string}
+        </p>
+      )}
       <Button
         label={isLoading ? "Cargando..." : "Regístrate"}
         onClick={handleSubmit(onSubmit)}
