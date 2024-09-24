@@ -1,4 +1,4 @@
-🛒 E-Commerce con Next.js, TypeScript, Prisma y MongoDB Atlas
+#🛒 E-Commerce con Next.js, TypeScript, Prisma y MongoDB Atlas
 Este proyecto es una aplicación de comercio electrónico (e-commerce) construida con Next.js y TypeScript para la parte del frontend y backend. Utiliza Prisma como ORM para gestionar las interacciones con MongoDB Atlas como base de datos. La aplicación incluye características clave como gestión de productos, carrito de compras, autenticación de usuarios y procesamiento de pedidos.
 
 🏗️ Tecnologías Utilizadas
